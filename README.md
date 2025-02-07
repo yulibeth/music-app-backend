@@ -10,14 +10,14 @@ El proyecto sigue un modelo de capas que consta de:
 
 ## Estructura del proyecto:
 ```bash
-src/main/java/com/quipux/music_app
+src/main/java/com/quipux/music-app-backend
     ├── controller       # Controladores REST
     ├── model            # Entidades JPA
     ├── repository       # Repositorios JPA
     ├── service          # Lógica de negocio
     └── security         # Configuración de seguridad (JWT)
 
-src/test/java/com/quipux/music_app
+src/test/java/com/quipux/music-app-backend
     ├── controller       # Pruebas del controlador
     ├── service          # Pruebas del servicio
     └── repository       # Pruebas del repositorio
@@ -46,11 +46,11 @@ src/test/java/com/quipux/music_app
 ## Configuración del proyecto
 1. Clona el repositorio:
    ```bash
-   git clone https://github.com/yulibeth/music_app.git
+   git clone https://github.com/yulibeth/music-app-backend.git
    ```
 2. Accede al directorio del proyecto:
    ```bash
-   cd music_app
+   cd music-app-backend
    ```
 3. Ejecuta la aplicación:
    ```bash
@@ -64,7 +64,7 @@ La base de datos H2 es accesible desde el navegador:
 - Usuario: `sa`
 - Contraseña: (vacío)
 
-##Servicio de Autenticación
+## Servicio de Autenticación
 Para interactuar con los endpoints protegidos de la aplicación, es necesario obtener un token JWT. Puedes hacerlo realizando una petición POST al endpoint de login:
 
 ```bash
