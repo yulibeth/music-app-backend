@@ -46,7 +46,7 @@ src/test/java/com/quipux/music_app
 ## Configuración del proyecto
 1. Clona el repositorio:
    ```bash
-   git clone https://github.com/yulibeth/music_app.git
+   git clone https://github.com/yulibeth/music-app-backend.git
    ```
 2. Accede al directorio del proyecto:
    ```bash
