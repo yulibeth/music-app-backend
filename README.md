@@ -10,14 +10,14 @@ El proyecto sigue un modelo de capas que consta de:
 
 ## Estructura del proyecto:
 ```bash
-src/main/java/com/quipux/music_app
+src/main/java/com/quipux/music-app-backend
     ├── controller       # Controladores REST
     ├── model            # Entidades JPA
     ├── repository       # Repositorios JPA
     ├── service          # Lógica de negocio
     └── security         # Configuración de seguridad (JWT)
 
-src/test/java/com/quipux/music_app
+src/test/java/com/quipux/music-app-backend
     ├── controller       # Pruebas del controlador
     ├── service          # Pruebas del servicio
     └── repository       # Pruebas del repositorio
@@ -50,7 +50,7 @@ src/test/java/com/quipux/music_app
    ```
 2. Accede al directorio del proyecto:
    ```bash
-   cd music_app
+   cd music-app-backend
    ```
 3. Ejecuta la aplicación:
    ```bash
