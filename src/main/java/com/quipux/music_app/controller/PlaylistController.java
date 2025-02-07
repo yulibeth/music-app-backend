@@ -1,43 +1,64 @@
 package com.quipux.music_app.controller;
 
 import com.quipux.music_app.model.Playlist;
-import com.quipux.music_app.service.PlaylistService;
+import com.quipux.music_app.repository.PlaylistRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/lists")
 public class PlaylistController {
-    private final PlaylistService playlistService;
 
-    public PlaylistController(PlaylistService playlistService) {
-        this.playlistService = playlistService;
+    private final PlaylistRepository playlistRepository;
+
+    public PlaylistController(PlaylistRepository playlistRepository) {
+        this.playlistRepository = playlistRepository;
     }
 
+    // POST /lists - Añadir una nueva lista de reproducción
     @PostMapping
-    public ResponseEntity<Playlist> createPlaylist(@RequestBody Playlist playlist) {
-        Playlist createdPlaylist = playlistService.createPlaylist(playlist);
-        URI location = URI.create("/lists/" + createdPlaylist.getNombre());
-        return ResponseEntity.created(location).body(createdPlaylist);
+    public ResponseEntity<?> addPlaylist(@RequestBody Playlist playlist) {
+        if (playlist.getNombre() == null || playlist.getNombre().trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("El nombre de la lista no puede ser nulo o vacío.");
+        }
+
+        Playlist savedPlaylist = playlistRepository.save(playlist);
+        URI location = URI.create("/lists/" + savedPlaylist.getNombre());
+        return ResponseEntity.created(location).body(savedPlaylist);
     }
 
+    // GET /lists - Ver todas las listas de reproducción existentes
     @GetMapping
-    public List<Playlist> getAllPlaylists() {
-        return playlistService.getAllPlaylists();
+    public ResponseEntity<List<Playlist>> getAllPlaylists() {
+        List<Playlist> playlists = playlistRepository.findAll();
+        return ResponseEntity.ok(playlists);
     }
 
-    @GetMapping("/{nombre}")
-    public ResponseEntity<Playlist> getPlaylistByName(@PathVariable String nombre) {
-        Playlist playlist = playlistService.getPlaylistByName(nombre);
-        return ResponseEntity.ok(playlist);
+    // GET /lists/{listName} - Ver descripción de una lista de reproducción seleccionada
+    @GetMapping("/{listName}")
+    public ResponseEntity<?> getPlaylistByName(@PathVariable String listName) {
+        Optional<Playlist> playlist = playlistRepository.findByNombre(listName);
+        if (playlist.isPresent()) {
+            return ResponseEntity.ok(playlist.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("La lista de reproducción no fue encontrada.");
+        }
     }
 
-    @DeleteMapping("/{nombre}")
-    public ResponseEntity<Void> deletePlaylistByName(@PathVariable String nombre) {
-        playlistService.deletePlaylistByName(nombre);
-        return ResponseEntity.noContent().build();
+    // DELETE /lists/{listName} - Borrar una lista de reproducción
+    @DeleteMapping("/{listName}")
+    public ResponseEntity<?> deletePlaylist(@PathVariable String listName) {
+        Optional<Playlist> playlist = playlistRepository.findByNombre(listName);
+        if (playlist.isPresent()) {
+            playlistRepository.delete(playlist.get());
+            return ResponseEntity.noContent().build();  // 204 No Content
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("La lista de reproducción no fue encontrada.");
+        }
     }
 }
