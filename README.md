@@ -64,7 +64,7 @@ La base de datos H2 es accesible desde el navegador:
 - Usuario: `sa`
 - Contraseña: (vacío)
 
-##Servicio de Autenticación
+## Servicio de Autenticación
 Para interactuar con los endpoints protegidos de la aplicación, es necesario obtener un token JWT. Puedes hacerlo realizando una petición POST al endpoint de login:
 
 ```bash
