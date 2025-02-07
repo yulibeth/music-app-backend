@@ -6,10 +6,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+public class SecurityConfig implements WebMvcConfigurer {
 
     private final JwtUtil jwtUtil;
     private final JwtFilter jwtFilter;
@@ -28,10 +30,17 @@ public class SecurityConfig {
                 .anyRequest().authenticated()  // Requiere autenticación para otras rutas
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);  // Filtro JWT
+
         return http.build();
     }
+
+    // Configuración global de CORS
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")  // Permitir todas las rutas
+                .allowedOrigins("http://localhost:4200")  // Cambia esta URL por la de tu frontend
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedHeaders("*")
+                .allowCredentials(true);  // Si es necesario permitir credenciales
+    }
 }
-
-
-
-
